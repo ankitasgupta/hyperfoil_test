@@ -1,0 +1,15 @@
+name: example
+simulation:
+  http:
+    baseUrl: {{ test_domain | default("http://github.com", true) }}
+  phases:
+  - example:
+      atOnce:
+        users: 1
+        scenario: &scenario
+          orderedSequences:
+          - test:
+            - httpRequest:
+                method: GET
+                path: /
+            - awaitAllResponses

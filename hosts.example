@@ -1,0 +1,5 @@
+[hyperfoil-controller]
+controller ansible_host=localhost
+
+[hyperfoil-agent]
+agent ansible_host=localhost
