@@ -1,15 +1,6 @@
 - name: Set hyperfoil_controller_host
   set_fact:
     hyperfoil_controller_host: "{{ hostvars[groups[hyperfoil_controller_group][0]]['ansible_hostname'] }}"
-- name: Get agents
-  uri:
-    url: "http://{{ hyperfoil_controller_host }}:{{ hyperfoil_controller_port }}/agents"
-    return_content: true
-    status_code: "200"
-  register: agents_json
-- name: Filter agents
-  set_fact:
-    agents: "{{ agents_json.content | from_json | json_query('[].name') }}"
 - name: Apply benchmark template
   template:
     src: 'benchmarks/{{ test_name }}.yaml.j2'
@@ -22,14 +13,6 @@
       Content-Type: "text/vnd.yaml; charset=UTF-8"
     url: "http://{{ hyperfoil_controller_host }}:{{ hyperfoil_controller_port }}/benchmark"
     status_code: "204"
-- name: Wait for all agents
-  uri:
-    url: "http://{{ hyperfoil_controller_host }}:8090/agents"
-    return_content: true
-  register: hyperfoil_agents
-  until: (hyperfoil_agents.content | from_json | length) >= (groups['hyperfoil-agent'] | length)
-  delay: 1
-  retries: 60
 - name: Start benchmark
   uri:
     url: "http://{{ hyperfoil_controller_host }}:{{ hyperfoil_controller_port }}/benchmark/{{ test_name }}/start"

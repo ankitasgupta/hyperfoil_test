@@ -1,15 +1,16 @@
 name: example
-simulation:
-  http:
-    baseUrl: {{ test_domain | default("http://github.com", true) }}
-  phases:
-  - example:
-      atOnce:
-        users: 1
-        scenario: &scenario
-          orderedSequences:
-          - test:
-            - httpRequest:
-                method: GET
-                path: /
-            - awaitAllResponses
+agents:
+{% for agent in groups[hyperfoil_agent_group] %}
+  {{ agent }}: {{ hostvars[agent]['ansible_host'] }}:{{ hyperfoil_agent_port }}
+{% endfor %}
+http:
+  baseUrl: {{ test_domain | default("http://hyperfoil.io", true) }}
+phases:
+- example:
+    atOnce:
+      users: 1
+      scenario:
+      - test:
+        - httpRequest:
+            method: GET
+            path: /
