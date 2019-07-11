@@ -8,6 +8,7 @@
 - name: Upload benchmark template
   uri:
     src: '/tmp/{{ test_name }}.yaml'
+    remote_src: yes
     method: POST
     headers:
       Content-Type: "text/vnd.yaml; charset=UTF-8"
