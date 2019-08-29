@@ -1,18 +1,17 @@
 # This is an example playbook. Run it with
 #     ansible-playbook -i hosts.example example.yml
-# - hosts: hyperfoil-controller
-#   tasks:
-#   roles:
-#   - hyperfoil.hyperfoil_setup
-- hosts: [ hyperfoil-agent, hyperfoil-controller ]
+- hosts: [ hyperfoil_agent, hyperfoil_controller ]
   tasks: []
+- hosts: hyperfoil_controller
+  roles:
+  - hyperfoil.hyperfoil_setup
 - hosts: 127.0.0.1
   connection: local
   roles:
   - hyperfoil.hyperfoil_test
   vars:
     test_name: example
-# Note that due to the way Ansible lookups work this will work only if hyperfoil-controller == localhost
+# Note that due to the way Ansible lookups work this will work only if hyperfoil_controller == localhost
 - hosts: 127.0.0.1
   connection: local
   tasks:
@@ -23,6 +22,6 @@
     debug:
       msg: "Executed {{ test_requests }} requests."
 - hosts:
-  - hyperfoil-controller
+  - hyperfoil_controller
   roles:
   - hyperfoil.hyperfoil_shutdown

@@ -11,7 +11,7 @@ Hyperfoil should be already deployed. See `hyperfoil-setup` role.
 Role Variables
 --------------
 
-* ansible hosts under `hyperfoil-controller` and `hyperfoil-agent` groups
+* ansible hosts under `hyperfoil_controller` and `hyperfoil_agent` groups
 * `test_name` (required): Name of the test, in `benchmarks` folder, with `yaml.j2` extension. This name must match the benchmark name in the file.
 * `hyperfoil_controller_group` (optional): Ansible group that hosts the controller. Default is `hyperofoil-controller`.
 * `hyperfoil_controller_port` (optional): Port on which Hyperfoil should listen
