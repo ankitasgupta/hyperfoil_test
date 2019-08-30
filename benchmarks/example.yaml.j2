@@ -4,7 +4,7 @@ agents:
   {{ agent }}: {{ hostvars[agent]['ansible_hostname'] }}:{{ hyperfoil_agent_port }}
 {% endfor %}
 http:
-  baseUrl: {{ test_domain | default("http://hyperfoil.io", true) }}
+  host: {{ test_domain | default("http://hyperfoil.io", true) }}
 phases:
 - example:
     atOnce:

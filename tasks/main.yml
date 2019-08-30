@@ -20,6 +20,7 @@
   template:
     src: 'benchmarks/{{ test_name }}.yaml.j2'
     dest: '/tmp/{{ test_name }}.yaml'
+    force: yes
 - name: Upload benchmark template
   uri:
     src: '/tmp/{{ test_name }}.yaml'
