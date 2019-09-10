@@ -4,7 +4,7 @@
     msg: Only one controller is allowed.
 - name: Gather facts about controller
   when: hostvars[groups[hyperfoil_controller_group][0]]['ansible_hostname'] is undefined
-  setup:
+  setup: {}
   delegate_to: groups[hyperfoil_controller_group][0]
   delegate_facts: true
 - name: Set hyperfoil_controller_host
@@ -12,7 +12,7 @@
     hyperfoil_controller_host: "{{ hostvars[groups[hyperfoil_controller_group][0]]['ansible_hostname'] }}"
 - name: Gather facts about agents
   when: hostvars[groups[hyperfoil_agent_group][0]]['ansible_hostname'] is undefined
-  setup:
+  setup: {}
   delegate_to: "{{ item }}"
   delegate_facts: true
   loop: "{{ groups[hyperfoil_agent_group] }}"
