@@ -23,7 +23,8 @@
     force: yes
 - name: Define benchmark upload file variable
   when: upload_parts is undefined
-  set_fact: upload_parts: '-F "benchmark=@/tmp/{{ test_name }}.yaml"'
+  set_fact:
+    upload_parts: '-F "benchmark=@/tmp/{{ test_name }}.yaml"'
 - name: Upload benchmark template 
   shell: 'curl -f -X POST \
     {{ upload_parts | join(" ") }} \
