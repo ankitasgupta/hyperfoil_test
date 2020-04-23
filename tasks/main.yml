@@ -21,16 +21,20 @@
     src: 'benchmarks/{{ test_name }}.yaml.j2'
     dest: '/tmp/{{ test_name }}.yaml'
     force: yes
-- name: Define benchmark upload file variable
-  when: upload_parts is undefined
+- name: Define benchmark upload test file variable
   set_fact:
-    upload_parts: '-F "benchmark=@/tmp/{{ test_name }}.yaml"'
+    benchmark_file: '/tmp/{{ test_name }}.yaml'
+- name: Define optional upload test files variable
+  when: test_files is undefined
+  set_fact:
+    test_files: []
 - name: Upload benchmark template 
-  shell: 'curl -f -X POST \
-    {{ upload_parts | join(" ") }} \
-    http://{{ hyperfoil_controller_host }}:{{ hyperfoil_controller_port }}/benchmark'
+  shell:
+      "{{ lookup('template', 'curl.j2') }} \
+    http://{{ hyperfoil_controller_host }}:{{ hyperfoil_controller_port }}/benchmark"
   register: curl_cmd
   failed_when: curl_cmd.rc > 1
+  warn: no
 - name: Start benchmark
   uri:
     url: "http://{{ hyperfoil_controller_host }}:{{ hyperfoil_controller_port }}/benchmark/{{ test_name }}/start"
