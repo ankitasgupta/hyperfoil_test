@@ -15,6 +15,7 @@ Role Variables
 * `test_name` (required): Name of the test, in `benchmarks` folder, with `yaml.j2` extension. This name must match the benchmark name in the file.
 * `hyperfoil_controller_group` (optional): Ansible group that hosts the controller. Default is `hyperofoil-controller`.
 * `hyperfoil_controller_port` (optional): Port on which Hyperfoil should listen
+* `hyperfoil_deployer` (optional): Method of deployment. Either `ssh` (default) or `k8s`.
 * `hyperfoil_agent_group` (optional): Ansible group that hosts the agents. Default is `hyperofoil-agent`.
 * `hyperfoil_agent_port` (optional): SSH port on agent. Default is 22.
 

@@ -1,17 +1,20 @@
-- name: Validate that there's only single controller
-  when: (groups[hyperfoil_controller_group] | length) != 1
-  fail:
-    msg: Only one controller is allowed.
-- name: Gather facts about controller
-  when: hostvars[groups[hyperfoil_controller_group][0]]['ansible_hostname'] is undefined
-  setup: {}
-  delegate_to: groups[hyperfoil_controller_group][0]
-  delegate_facts: true
-- name: Set hyperfoil_controller_host
-  set_fact:
-    hyperfoil_controller_host: "{{ hostvars[groups[hyperfoil_controller_group][0]]['ansible_hostname'] }}"
+- name: Gather information
+  when: hyperfoil_controller_host is undefined
+  block:
+  - name: Validate that there's only single controller
+    when: (groups[hyperfoil_controller_group] | length) != 1
+    fail:
+      msg: Only one controller is allowed.
+  - name: Gather facts about controller
+    when: hostvars[groups[hyperfoil_controller_group][0]]['ansible_hostname'] is undefined
+    setup: {}
+    delegate_to: groups[hyperfoil_controller_group][0]
+    delegate_facts: true
+  - name: Set hyperfoil_controller_host
+    set_fact:
+      hyperfoil_controller_host: "{{ hostvars[groups[hyperfoil_controller_group][0]]['ansible_hostname'] }}"
 - name: Gather facts about agents
-  when: hostvars[groups[hyperfoil_agent_group][0]]['ansible_hostname'] is undefined
+  when: hyperfoil_deployer == "ssh" and hostvars[groups[hyperfoil_agent_group][0]]['ansible_hostname'] is undefined
   setup: {}
   delegate_to: "{{ item }}"
   delegate_facts: true

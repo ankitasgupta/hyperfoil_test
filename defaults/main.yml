@@ -2,3 +2,4 @@ hyperfoil_agent_group: hyperfoil_agent
 hyperfoil_agent_port: 22
 hyperfoil_controller_group: hyperfoil_controller
 hyperfoil_controller_port: 8090
+hyperfoil_deployer: ssh
