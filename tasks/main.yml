@@ -31,16 +31,20 @@
   when: test_files is undefined
   set_fact:
     test_files: []
+- name: log vars
+  debug:
+    msg: "Validate: >{{ hyperfoil_validate_certs }}<"
 - name: Upload benchmark template
   shell:
-      "{{ lookup('template', 'templates/curl.j2') }} \
-    http://{{ hyperfoil_controller_host }}:{{ hyperfoil_controller_port }}/benchmark"
+    "{{ lookup('template', 'templates/curl.j2') }} -L --post302 {{ '-k' if not (hyperfoil_validate_certs | bool) else '' }} \
+    {{ hyperfoil_controller_protocol }}://{{ hyperfoil_controller_host }}:{{ hyperfoil_controller_port }}/benchmark"
   register: curl_cmd
   failed_when: curl_cmd.rc > 1
 - name: Start benchmark
   uri:
-    url: "http://{{ hyperfoil_controller_host }}:{{ hyperfoil_controller_port }}/benchmark/{{ test_name }}/start{{ ('?desc=' + run_description ) if run_description is defined }}"
+    url: "{{ hyperfoil_controller_protocol }}://{{ hyperfoil_controller_host }}:{{ hyperfoil_controller_port }}/benchmark/{{ test_name }}/start{{ ('?desc=' + run_description ) if run_description is defined }}"
     status_code: "202"
+    validate_certs: "{{ hyperfoil_validate_certs | bool }}"
   register: test_run
 - name: Set run ID
   set_fact:
@@ -51,6 +55,7 @@
 - name: Poll benchmark completion
   uri:
     url: "{{ test_run.location }}"
+    validate_certs: "{{ hyperfoil_validate_certs | bool }}"
     return_content: true
   register: test_status
   # Ansible 2.7 does not support include_tasks in do-until loop so we need to inline the condition
