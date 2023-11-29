@@ -1,5 +1,7 @@
 [hyperfoil_controller]
-controller ansible_host=localhost
+hyperfoil_controller_host=hyperfoil-hyperfoil.apps.ocp1.tt.testing
+test_domain=http://productpage-bookinfo.apps.ocp1.tt.testing
+hyperfoil_controller_protocol=http
 
 [hyperfoil_agent]
 agent ansible_host=localhost

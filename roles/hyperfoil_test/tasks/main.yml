@@ -13,12 +13,12 @@
   - name: Set hyperfoil_controller_host
     set_fact:
       hyperfoil_controller_host: "{{ hostvars[groups[hyperfoil_controller_group][0]]['ansible_hostname'] }}"
-- name: Gather facts about agents
-  when: hyperfoil_deployer == "ssh" and hostvars[groups[hyperfoil_agent_group][0]]['ansible_hostname'] is undefined
-  setup: {}
-  delegate_to: "{{ item }}"
-  delegate_facts: true
-  loop: "{{ groups[hyperfoil_agent_group] }}"
+# - name: Gather facts about agents
+#   when: hyperfoil_deployer == "" and hostvars[groups[hyperfoil_agent_group][0]]['ansible_hostname'] is undefined
+#   setup: {}
+#   delegate_to: "{{ item }}"
+#   delegate_facts: true
+#   loop: "{{ groups[hyperfoil_agent_group] }}"
 - name: Apply benchmark template
   template:
     src: 'benchmarks/{{ test_name }}.yaml.j2'
@@ -37,12 +37,12 @@
 - name: Upload benchmark template
   shell:
     "{{ lookup('template', 'templates/curl.j2') }} -L --post302 {{ '-k' if not (hyperfoil_validate_certs | bool) else '' }} \
-    {{ hyperfoil_controller_protocol }}://{{ hyperfoil_controller_host }}:{{ hyperfoil_controller_port }}/benchmark"
+    {{ hyperfoil_controller_protocol }}://{{ hyperfoil_controller_host }}/benchmark"
   register: curl_cmd
   failed_when: curl_cmd.rc > 1
 - name: Start benchmark
   uri:
-    url: "{{ hyperfoil_controller_protocol }}://{{ hyperfoil_controller_host }}:{{ hyperfoil_controller_port }}/benchmark/{{ test_name }}/start{{ ('?desc=' + run_description ) if run_description is defined else '' }}"
+    url: "{{ hyperfoil_controller_protocol }}://{{ hyperfoil_controller_host }}/benchmark/{{ test_name }}/start{{ ('?desc=' + run_description ) if run_description is defined else '' }}"
     status_code: "202"
     validate_certs: "{{ hyperfoil_validate_certs | bool }}"
   register: test_run

@@ -1,8 +1,9 @@
 name: example
 agents:
-{% for agent in groups[hyperfoil_agent_group] %}
-  {{ agent }}: {{ hostvars[agent]['ansible_hostname'] }}:{{ hyperfoil_agent_port }}
-{% endfor %}
+  agent-one:
+      image: quay.io/ibm-z-performance/hyperfoil:0.25
+      pod-cpu: "6500m"
+      pod-memory: "6Gi"
 http:
   host: {{ test_domain | default("http://hyperfoil.io", true) }}
 phases:
