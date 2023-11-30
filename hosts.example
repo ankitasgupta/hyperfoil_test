@@ -1,5 +1,5 @@
 [hyperfoil_controller]
-controller ansible_host=localhost ansible_ssh_pass=14/15Irbm
+controller ansible_host=localhost ansible_ssh_pass= ****
 
 [hyperfoil_controller:vars]
 hyperfoil_controller_host=hyperfoil-hyperfoil.apps.ocp1.tt.testing
