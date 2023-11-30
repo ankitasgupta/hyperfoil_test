@@ -4,5 +4,5 @@ hyperfoil_controller_group: hyperfoil_controller
 hyperfoil_controller_port: 8090
 hyperfoil_controller_protocol: http
 hyperfoil_deployer: k8s
-hyperfoil_validate_certs: true
+hyperfoil_validate_certs: false
 
